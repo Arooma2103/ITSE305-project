@@ -5,7 +5,7 @@ import java.util.Scanner;
 // Classes representing the presentation, business, and data layers.
 // Each class and its methods have descriptive comments.
 
-public class CustomerService {
+public class customerService {
 
     // Data Layer - Representing customer service requests and details
     public static class ServiceRequest {
