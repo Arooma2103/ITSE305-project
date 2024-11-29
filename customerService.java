@@ -8,6 +8,8 @@ import java.util.Scanner;
 public class customerService {
 
     // Data Layer - Representing customer service requests and details
+
+    //proposed change: the attributes of ServiceRequest (customerName, contactNumber, etc.) are public, better to declare them as private and provide getters and setters for controlled access
     public static class ServiceRequest {
         String customerName;
         String contactNumber;
@@ -87,11 +89,15 @@ public class customerService {
         int option;
         boolean running = true;
         String customerName;
+
+        //proposed change: contactNumber and issueDescription variables are never used, we may remove it to improve efficiency and decrease code lines
         String contactNumber;
         String issueDescription;
         String newStatus;
 
         // Presentation Layer
+
+        //proposed change: add error handling for invalid user input in the main method. for example if the user enters a non-numeric value when a number is expected
         while (running) {
             System.out.println("Select an option:");
             System.out.println("1: View all service requests");
@@ -107,8 +113,11 @@ public class customerService {
                     break;
                 }
                 case 2 -> {
+                    //proposed change: could ignore case when comparing customerName to avoid mismatches due to case differences
                     System.out.println("Enter the customer name to search:");
                     customerName = kb.nextLine();
+
+                    //proposed change: include a message indicating how many results were found, even when some are found example: "Found 3 requests"
                     ServiceRequest.findByCustomerName(customerName);
                     break;
                 }
