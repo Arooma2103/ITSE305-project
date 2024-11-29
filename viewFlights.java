@@ -14,13 +14,13 @@ public class viewFlights {
         //data layer representing the data needed for flights
         // Proposed Change 1: Make fields private and provide getter methods for encapsulation.
         // This helps in better object-oriented design and promotes data encapsulation, making the fields more secure and maintainable.
-        String airlineName;
-        LocalDate travelDate;
-        LocalTime DepTime;
-        LocalTime arrTime;
-        String flightCode;
-        String originCountry;
-        String toCountry;
+        private String airlineName;
+        private LocalDate travelDate;
+        private LocalTime depTime;
+        private LocalTime arrTime;
+        private String flightCode;
+        private String originCountry;
+        private String toCountry;
 
         private static final ArrayList<flights> availableFlights = new ArrayList<>();
 
@@ -28,7 +28,7 @@ public class viewFlights {
         public flights(String airlineName, LocalDate travelDate, LocalTime DepTime, LocalTime arrTime, String flightCode, String originCountry, String toCountry){
             this.airlineName = airlineName;
             this.travelDate = travelDate;
-            this.DepTime = DepTime;
+            this.depTime = DepTime;
             this.arrTime = arrTime;
             this.flightCode = flightCode;
             this.originCountry = originCountry;
@@ -51,7 +51,7 @@ public class viewFlights {
                 System.out.println("Airline: " + flight.airlineName);
                 System.out.println("From: " + flight.originCountry + " to " + flight.toCountry);
                 System.out.println("Date: " + flight.travelDate);
-                System.out.println("Time: " + flight.DepTime + " to " + flight.arrTime);
+                System.out.println("Time: " + flight.depTime + " to " + flight.arrTime);
                 System.out.println("Code: " + flight.flightCode);
                 System.out.println("===============================================");
             }
@@ -66,7 +66,7 @@ public class viewFlights {
                     System.out.println("Airline: " + flight.airlineName);
                     System.out.println("From: " + flight.originCountry + " to " + flight.toCountry);
                     System.out.println("Date: " + flight.travelDate);
-                    System.out.println("Time: " + flight.DepTime + " to " + flight.arrTime);
+                    System.out.println("Time: " + flight.depTime + " to " + flight.arrTime);
                     System.out.println("Code: " + flight.flightCode);
                     System.out.println("===============================================");
                 }
@@ -85,7 +85,7 @@ public class viewFlights {
                     System.out.println("Airline: " + flight.airlineName);
                     System.out.println("From: " + flight.originCountry + " to " + flight.toCountry);
                     System.out.println("Date: " + flight.travelDate);
-                    System.out.println("Time: " + flight.DepTime + " to " + flight.arrTime);
+                    System.out.println("Time: " + flight.depTime + " to " + flight.arrTime);
                     System.out.println("Code: " + flight.flightCode);
                     System.out.println("===============================================");
                 }
@@ -93,10 +93,10 @@ public class viewFlights {
             if(count == 0){
                 System.out.println("No flights available");
             }
+        }
     }
-}
     public static void main(String[] args) {
-        
+
         @SuppressWarnings("resource")
         Scanner kb = new Scanner(System.in);
         int option;
@@ -116,70 +116,36 @@ public class viewFlights {
             System.out.println("3: Search flight by flight code ");
             System.out.println("4: Exit ");
             option = kb.nextInt();
-            switch(option){
-                case 1 -> {
-                    flights.displayAllFlights();
-                    System.out.println("Search more? Y/N");
-                    yn = kb.next();
-                    if("N".equalsIgnoreCase(yn)){
-                        avail = false;
-                    }
-                    else if("Y".equalsIgnoreCase(yn)){
-                        avail = true;
-                    }
-                    else{
-                        System.out.println("invalid input, retry.");
-                    }
-                    break;
-                }
+            switch (option) {
+                case 1 -> flights.displayAllFlights();
                 case 2 -> {
-                    System.out.println("What is your destination? ");
-                    dest = kb.next();
-                    flights.findByDandT(dest);
-                    System.out.println("Search more? Y/N");
-                    yn = kb.next();
-                    if("N".equalsIgnoreCase(yn)){
-                        avail = false;
-                    }
-                    else if("Y".equalsIgnoreCase(yn)){
-                        avail = true;
-                    }
-                    else{
-                        System.out.println("invalid input, retry.");
-                    }
-                    break;
+                    System.out.println("What is your destination?");
+                    String destination = kb.next();
+                    flights.findByDandT(destination);
                 }
                 case 3 -> {
-                    System.out.println("Enter the flight code: ");
-                    fCode = kb.next();
-                    flights.findByCode(fCode);
-                    System.out.println("Search more? Y/N");
-                    yn = kb.next();
-                    if("N".equalsIgnoreCase(yn)){
-                        avail = false;
-                    }
-                    else if("Y".equalsIgnoreCase(yn)){
-                        avail = true;
-                    }
-                    else{
-                        System.out.println("invalid input, retry.");
-                    }
-                    break;
+                    System.out.println("Enter the flight code:");
+                    String flightCode = kb.next();
+                    flights.findByCode(flightCode);
                 }
                 case 4 -> {
                     System.out.println("Thank you for using our system.");
-                    System.exit(0);
+                    avail = false;
                 }
-                default -> {
-                    System.out.println("Please select one of the available options");
-                }
+                default -> System.out.println("Please select a valid option.");
+            }
+
+            if (option != 4) {
+                avail = askToSearchMore(kb);
             }
         }
-
-        System.out.println("Thank you for using our system.");
-        System.exit(0);
     }
+
     // Proposed Change 3: Refactor repetitive code for handling the "Search more?" prompt into a method
     // This method will handle asking whether the user wants to continue searching, reducing duplication.
-    
-}
+    private static boolean askToSearchMore(Scanner kb) {
+        System.out.println("Search more? Y/N");
+        String yn = kb.next();
+        return "Y".equalsIgnoreCase(yn);
+
+    }}
