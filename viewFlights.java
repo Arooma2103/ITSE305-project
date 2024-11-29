@@ -12,6 +12,8 @@ public class viewFlights {
 
     public static class flights{
         //data layer representing the data needed for flights
+        // Proposed Change 1: Make fields private and provide getter methods for encapsulation.
+        // This helps in better object-oriented design and promotes data encapsulation, making the fields more secure and maintainable.
         String airlineName;
         LocalDate travelDate;
         LocalTime DepTime;
@@ -104,6 +106,8 @@ public class viewFlights {
         String fCode;
 
         //presentation layer
+        // Proposed Change 2: Use a switch expression to simplify the flow and avoid repetitive code.
+        // The current design repeatedly asks the user if they want to search more after each option. We can simplify this using a loop and removing repetition.
 
         while(avail){
             System.out.println("Select an option: ");
@@ -175,5 +179,7 @@ public class viewFlights {
         System.out.println("Thank you for using our system.");
         System.exit(0);
     }
+    // Proposed Change 3: Refactor repetitive code for handling the "Search more?" prompt into a method
+    // This method will handle asking whether the user wants to continue searching, reducing duplication.
     
 }
