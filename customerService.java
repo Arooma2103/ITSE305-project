@@ -2,24 +2,20 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-// Classes representing the presentation, business, and data layers.
-// Each class and its methods have descriptive comments.
-
 public class customerService {
 
     // Data Layer - Representing customer service requests and details
-
-    //proposed change: the attributes of ServiceRequest (customerName, contactNumber, etc.) are public, better to declare them as private and provide getters and setters for controlled access
     public static class ServiceRequest {
-        String customerName;
-        String contactNumber;
-        LocalDate requestDate;
-        String issueDescription;
-        String status; // e.g., Open, In Progress, Closed
+        // Changed attributes to private and added getters and setters for controlled access
+        private String customerName; // Encapsulated
+        private String contactNumber; // Encapsulated
+        private LocalDate requestDate; // Encapsulated
+        private String issueDescription; // Encapsulated
+        private String status; // Encapsulated
 
         private static final ArrayList<ServiceRequest> serviceRequests = new ArrayList<>();
 
-        // Constructor to initialize a service request
+        // Constructor
         public ServiceRequest(String customerName, String contactNumber, LocalDate requestDate, String issueDescription, String status) {
             this.customerName = customerName;
             this.contactNumber = contactNumber;
@@ -28,50 +24,92 @@ public class customerService {
             this.status = status;
         }
 
-        // Static block to add some sample data for testing
+        // Getters and setters for controlled access
+        public String getCustomerName() {
+            return customerName;
+        }
+
+        public void setCustomerName(String customerName) {
+            this.customerName = customerName;
+        }
+
+        public String getContactNumber() {
+            return contactNumber;
+        }
+
+        public void setContactNumber(String contactNumber) {
+            this.contactNumber = contactNumber;
+        }
+
+        public LocalDate getRequestDate() {
+            return requestDate;
+        }
+
+        public void setRequestDate(LocalDate requestDate) {
+            this.requestDate = requestDate;
+        }
+
+        public String getIssueDescription() {
+            return issueDescription;
+        }
+
+        public void setIssueDescription(String issueDescription) {
+            this.issueDescription = issueDescription;
+        }
+
+        public String getStatus() {
+            return status;
+        }
+
+        public void setStatus(String status) {
+            this.status = status;
+        }
+
+        // Static block to add sample data
         static {
             serviceRequests.add(new ServiceRequest("John Doe", "1234567890", LocalDate.of(2024, 10, 25), "Issue with flight booking", "Open"));
             serviceRequests.add(new ServiceRequest("Jane Smith", "0987654321", LocalDate.of(2024, 10, 26), "Request for refund", "In Progress"));
         }
 
-        // Business Layer - Methods for managing service requests
-        // 1. Display all service requests
+        // Display all service requests
         public static void displayAllRequests() {
             for (ServiceRequest request : serviceRequests) {
-                System.out.println("Customer Name: " + request.customerName);
-                System.out.println("Contact Number: " + request.contactNumber);
-                System.out.println("Date: " + request.requestDate);
-                System.out.println("Issue: " + request.issueDescription);
-                System.out.println("Status: " + request.status);
+                System.out.println("Customer Name: " + request.getCustomerName());
+                System.out.println("Contact Number: " + request.getContactNumber());
+                System.out.println("Date: " + request.getRequestDate());
+                System.out.println("Issue: " + request.getIssueDescription());
+                System.out.println("Status: " + request.getStatus());
                 System.out.println("===============================================");
             }
         }
 
-        // 2. Search for service requests by customer name
+        // Search for service requests by customer name (case-insensitive comparison)
         public static void findByCustomerName(String name) {
             int count = 0;
             for (ServiceRequest request : serviceRequests) {
-                if (request.customerName.equalsIgnoreCase(name)) {
+                if (request.getCustomerName().equalsIgnoreCase(name)) { // Case-insensitive comparison
                     count++;
-                    System.out.println("Customer Name: " + request.customerName);
-                    System.out.println("Contact Number: " + request.contactNumber);
-                    System.out.println("Date: " + request.requestDate);
-                    System.out.println("Issue: " + request.issueDescription);
-                    System.out.println("Status: " + request.status);
+                    System.out.println("Customer Name: " + request.getCustomerName());
+                    System.out.println("Contact Number: " + request.getContactNumber());
+                    System.out.println("Date: " + request.getRequestDate());
+                    System.out.println("Issue: " + request.getIssueDescription());
+                    System.out.println("Status: " + request.getStatus());
                     System.out.println("===============================================");
                 }
             }
-            if (count == 0) {
+            if (count > 0) {
+                System.out.println("Found " + count + " request(s).");
+            } else {
                 System.out.println("No service requests found for customer: " + name);
             }
         }
 
-        // 3. Update the status of a service request
+        // Update the status of a service request
         public static void updateStatus(String customerName, String newStatus) {
             boolean updated = false;
             for (ServiceRequest request : serviceRequests) {
-                if (request.customerName.equalsIgnoreCase(customerName)) {
-                    request.status = newStatus;
+                if (request.getCustomerName().equalsIgnoreCase(customerName)) { // Case-insensitive comparison
+                    request.setStatus(newStatus); // Use setter to update
                     updated = true;
                     System.out.println("Status updated successfully for " + customerName + " to " + newStatus);
                     break;
@@ -86,53 +124,43 @@ public class customerService {
     public static void main(String[] args) {
         @SuppressWarnings("resource")
         Scanner kb = new Scanner(System.in);
-        int option;
         boolean running = true;
-        String customerName;
 
-        //proposed change: contactNumber and issueDescription variables are never used, we may remove it to improve efficiency and decrease code lines
-        String contactNumber;
-        String issueDescription;
-        String newStatus;
-
-        // Presentation Layer
-
-        //proposed change: add error handling for invalid user input in the main method. for example if the user enters a non-numeric value when a number is expected
         while (running) {
             System.out.println("Select an option:");
             System.out.println("1: View all service requests");
             System.out.println("2: Search service requests by customer name");
             System.out.println("3: Update service request status");
             System.out.println("4: Exit");
-            option = kb.nextInt();
-            kb.nextLine(); // Clear the newline character
+
+            // Added error handling for invalid numeric input
+            int option = 0;
+            try {
+                option = Integer.parseInt(kb.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a number.");
+                continue; // Retry input
+            }
 
             switch (option) {
                 case 1 -> {
                     ServiceRequest.displayAllRequests();
-                    break;
                 }
                 case 2 -> {
-                    //proposed change: could ignore case when comparing customerName to avoid mismatches due to case differences
                     System.out.println("Enter the customer name to search:");
-                    customerName = kb.nextLine();
-
-                    //proposed change: include a message indicating how many results were found, even when some are found example: "Found 3 requests"
+                    String customerName = kb.nextLine();
                     ServiceRequest.findByCustomerName(customerName);
-                    break;
                 }
                 case 3 -> {
                     System.out.println("Enter the customer name to update the status:");
-                    customerName = kb.nextLine();
+                    String customerName = kb.nextLine();
                     System.out.println("Enter the new status (e.g., Open, In Progress, Closed):");
-                    newStatus = kb.nextLine();
+                    String newStatus = kb.nextLine();
                     ServiceRequest.updateStatus(customerName, newStatus);
-                    break;
                 }
                 case 4 -> {
                     System.out.println("Thank you for using our customer service system.");
                     running = false;
-                    break;
                 }
                 default -> System.out.println("Please select a valid option.");
             }
@@ -141,3 +169,4 @@ public class customerService {
         System.out.println("System exited.");
     }
 }
+

@@ -20,6 +20,7 @@ class User {
 // Class representing the Registration System
 public class RegistrationSystem {
    private static final ArrayList<User> users = new ArrayList<>(); // List to store registered users
+   // Improvement: Validate inputs to ensure username and password are not empty or null
    // Method to create a new account
    public static void createAccount(String username, String password) {
        // Check if the username already exists
@@ -29,6 +30,7 @@ public class RegistrationSystem {
                return;
            }
        }
+       // Improvement: Consider hashing the password for security instead of storing it in plain text
        // Create a new user and add to the list
        User newUser = new User(username, password);
        users.add(newUser);
@@ -36,6 +38,7 @@ public class RegistrationSystem {
    }
    // Method to login
    public static void login(String username, String password) {
+    // Improvement: Handle null or empty inputs for username and password
        for (User user : users) {
            if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
                System.out.println("Login successful! Welcome " + username + "!");
@@ -46,6 +49,7 @@ public class RegistrationSystem {
    }
    // Method to handle forgotten password
    public static void forgetPassword(String username) {
+    // Improvement: Handle null or empty input for username=
        for (User user : users) {
            if (user.getUsername().equals(username)) {
                System.out.println("Your password is: " + user.getPassword());
@@ -65,6 +69,8 @@ public class RegistrationSystem {
            System.out.println("2: Login");
            System.out.println("3: Forget Password");
            System.out.println("4: Exit");
+           // Improvement: Validate user input to handle invalid numbers or non-numeric inputs
+
            option = kb.nextInt();
            kb.nextLine(); // Consume newline
            switch (option) {
